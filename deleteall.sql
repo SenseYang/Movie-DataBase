@@ -1,0 +1,9 @@
+delete from Actor;
+delete from Director;
+delete from MaxMovieID;
+delete from MaxPersonID;
+delete from Movie;
+delete from MovieActor;
+delete from MovieDirector;
+delete from MovieGenre;
+delete from Review;
