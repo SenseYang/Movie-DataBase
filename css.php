@@ -1,22 +1,23 @@
 <?php
 /**
- * This file exists as a .php file (instead of a static file) to get around some caching oddities
- * with static files and shared folders on VirtualBox for Windows.
+ * CSS decoration files
  */
 header( 'Content-Type: text/css' );
 ?>
 body {
-	font-family: 'Lustria', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+	background-color:lightgray;
+	font-family: Arial Black;
 	font-weight: 300;
 	font-size: 14px;
+	background-color:lightgrey
 	line-height: 18px;
-	width: 1100px;
+	width: 1200px;
 	margin: 0 auto;
-	color: #1A2B2B;
+	color: #424242;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Lato';
+	font-family: Arial Black;
 }
 
 header {
@@ -24,43 +25,46 @@ header {
 }
 
 header h1 {
-	font-size: 24px;
+	font-family: Impact;
+	font-size: 50x;
 	font-weight: bold;
+	color: #424242;
 	width: 400px;
 	float: left;
 }
 
+small{
+	font-family: Arial Black;
+}
 nav ul {
+	font-family: Impact;
 	width: 600px;
 	float: right;
 	font-size: 14px;
 }
 
-nav li {
-	display: inline;
+nav li{
+	display:inline;
 }
-
 nav li a, nav li a:visited {
 	color: #556270;
 	font-size: 16px;
 }
 
 p, div {
+	padding: 10px;
+	margin: 20px;
 	clear: both;
 }
 
-.comment-wrapper {
-	width: 45%;
+table#searchResult{
+	float:left;
+	width: 33%;
+}
+sup{
+	color: red;
 }
 
-.comment {
-	border: 4px double gray;
-	margin: 5px 0 5px 0;
-}
-
-.comment p {
-	margin: 5px;
-}
 
 <?php
 /**

@@ -3,25 +3,23 @@ require_once('facilities.php');
 page_head('Search');
 $db_connection = getConnection();
 ?>
-<h1>Search Page</h1><br>
 <form method = "post" action = "<?php echo $_SERVER['PHP_SELF'];?>">
 <blockquote>
-Search:<br>
-<textarea name = "searchKey" rows = 1 cols = 50>
-</textarea>
-<input type = "submit" name = "searchKeySubmit" value = "submit"><br>
-e.g <I>Jon Smith</I> or <I>The Titanic</I>
-</blockquote>
+	<p><h2>Search Page</h2><br></p>
+		<textarea name = "searchKey" rows = 1 cols = 50></textarea>
+		<input type = "submit" name = "searchKeySubmit" value = "submit"><br>
+	e.g <I>Jon Smith</I> or <I>The Titanic</I><br>
 <?php
-
 $badinput = false;
 if($_POST['searchKeySubmit']){
 	$searchKey = $_POST['searchKey'];
 	if(empty($searchKey)){
-		echo "Please specify search key<br>";
+?>
+		<p>Please Specify Any Searchkey!</p>
+<?php
 		$badinput = true;
 	}
-	// split search key into parts
+	// split the string into segments
 	else{
 		$searchKeyArray = preg_split("/\s/", $searchKey);
 	}
@@ -30,7 +28,7 @@ if($_POST['searchKeySubmit']){
 		$arraySize = count($searchKeyArray);
 		$actorQuery = "select id, last, first from Actor where concat(first, ' ', last) like " . "'%" . $searchKeyArray[0] . "%' ";
 		for($i = 1; $i < $arraySize; $i++){
-			$actorQuery .= " and concat(first, last) like ";
+			$actorQuery .= " and concat(first, ' ', last) like ";
 			$actorQuery .= "'%" . $searchKeyArray[$i] . "%'";
 		}
 		$actorQuery .= ";";
@@ -38,55 +36,84 @@ if($_POST['searchKeySubmit']){
 		$row = mysql_fetch_row($result);
 		if($row){
 			$noResult = false;
-			print "<font size = 4>Actors:<br></font>";
+?>
+			<table id='searchResult'>
+			<tr><td><h2>Actors:</h2></td></tr>
+<?php
 			do{
 				$link = hyperlink(ACTOR, 'actorID', $row[0], $row[2] . " " . $row[1]);
-				print $link;
-				print "<br>";	
+?>
+			<tr><td><?php print $link?></td></tr>
+<?php
 				$row = mysql_fetch_row($result);
 			}while($row);
+?>
+			</table>
+<?php
 		}
 		// search in director, in page browse3, variable: directorID
-		$directorQuery = "select id, last, first from Director where concat(first, last) like '%" . $searchKeyArray[0] . "%' ";
+		$directorQuery = "select id, last, first from Director where concat(first, ' ', last) like '%" . $searchKeyArray[0] . "%' ";
 		for($i = 1; $i < $arraySize; $i++){
-			$directorQuery .= " and concat(first, last) like ";
+			$directorQuery .= " and concat(first, ' ', last) like ";
 			$directorQuery .= "'%" . $searchKeyArray[$i] . "%'";
 		}
 		$directorQuery .= ";";
 		$result = mysql_query($directorQuery, $db_connection);
 		$row = mysql_fetch_row($result);
 		if($row){
+?>
+			<table id='searchResult'>
+			<tr><td><h2>Directors:</h2></td></tr>
+<?php
 			$noResult = false;
-			print "<font size = 4>Directors:<br></font>";
 			do{
 				$link = hyperlink(DIRECTOR_INFO, 'directorID', $row[0], $row[2] . " " . $row[1]);
-				print $link;
-				print "<br>";	
+?>
+			<tr><td><?php print $link?></td></tr>
+<?php
+				// print $link;
+				// print "<br>";	
 				$row = mysql_fetch_row($result);		
-			}while($row); 
+			}while($row);
+?>
+			</table>
+<?php
 		}
 		// search in title, variable: movieID
 		$movieQuery = "select id, title, year from Movie where title like '%" . $searchKey . "%';";
 		$result = mysql_query($movieQuery, $db_connection);
-		print "<br>";
 		$row = mysql_fetch_row($result);
 		if($row){
 			$noResult = false;
-			print "<font size = 4>Movies:<br></font>";
+?>
+			<table id='searchResult'>
+			<tr><td><h2>Movies:</h2></td></tr>
+<?php
 			do{
 				$link = hyperlink(MOVIE_INFO, 'movieID', $row[0], $row[1]. " (" .$row[2].")");
-				print $link;
-				print "<br>";	
+?>
+				<tr><td><?php print $link?></td></tr>
+<?php
 				$row = mysql_fetch_row($result);
 			}while($row);
+?>
+			</table>
+<?php
 		}
 		if($noResult){
+?> 
+		<p>No results found!</p><br>
+<?
+		}
+		else{
 ?>
-		<p>No results found!</p>
 <?
 		}
 	}
 }
+?>
+</blockquote>
+<?php
 mysql_close($db_connection);
 page_foot();
 ?>

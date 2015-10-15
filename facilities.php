@@ -15,20 +15,19 @@ function page_head($curPage){
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> My Movie Database - <?php echo $curPage?></title>
-		<link href='http://fonts.googleapis.com/css?family=Lustria|Lato' rel='stylesheet' type='text/css'>
+		<title> My Movie Database_<?php echo $curPage?></title>
 		<link rel="stylesheet" type="text/css" href="<?php echo CSS; ?>">
 	</head>
-	<body>
 		<header>
-			<h1>My Movie Database</h1>
+			<h1>My Movie Database<sub><i><small>by Sen Yang</small></i></sub></h1>
 			<nav>
 				<ul>
-					<li><a href="<?php echo SEARCH       ?>">Search       <br></a></li>
-					<li><a href="<?php echo MOVIE_ADD    ?>">Add Movie    <br></a></li>
-					<li><a href="<?php echo MOVIE_COMMENT?>">Add Comment  <br></a></li>
-					<li><a href="<?php echo PERSON_ADD   ?>">Add Person   <br></a></li>
-					<li><a href="<?php echo RELATION     ?>">Add Relation <br></a></li>
+					<li><a href="<?php echo INDEX        ?>">Front Page   </a></li>|
+					<li><a href="<?php echo SEARCH       ?>">Search       </a></li>|
+					<li><a href="<?php echo MOVIE_ADD    ?>">Add Movie    </a></li>|
+					<li><a href="<?php echo MOVIE_COMMENT?>">Add Comment  </a></li>|
+					<li><a href="<?php echo PERSON_ADD   ?>">Add Person   </a></li>|
+					<li><a href="<?php echo RELATION     ?>">Add Relation </a></li>
 				</ul>
 			</nav>
 		</header>
@@ -64,4 +63,3 @@ function hyperlink( $url, $paraname, $id, $text, $target = NULL ) {
 	$a .= ">$text</a></I>";
 	return $a;
 }
-?>

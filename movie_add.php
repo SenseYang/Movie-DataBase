@@ -5,45 +5,58 @@ page_head('Add Movie Info');
 $db_connection = getConnection();
 ?>
 <form method = "POST" action = "<?php echo $_SERVER['PHP_SELF'];?>">
-
-Movie ID:<br>
-<textarea name = "Movie_id" rows = 1 cols = 20>
-</textarea><?php echo str_repeat("&nbsp", 5);?>Note: Movie ID cannot be <I>NULL</I>!<br>
-
-Movie title:<br>
-<textarea name = "Movie_title" rows = 1 cols = 20>
-</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>The Titanic</I><br>
-
-Year:<br>
-<textarea name = "Movie_year" rows = 1 cols = 20>
-</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>1997</I><br>
-
-Rating:<br>
-<textarea name = "Movie_rating" rows = 1 cols = 20>
-</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>PG-13</I><br>
-
-Company:<br>
-<textarea name = "Movie_company" rows = 1 cols = 20>
-</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>Drama Film</I><br>
-
-<input type = "submit" name = "submit_Movie" value = "submit actor/director info"> <br><br></blockquote>
+	<blockquote>
+	<p><h2>Add Movie Information</h2><br></p>
+	<p>
+		Movie ID<sup>*</sup>:<br>
+		<textarea name = "Movie_id" rows = 1 cols = 20>
+		</textarea><?php echo str_repeat("&nbsp", 5);?>Note: Movie ID cannot be <I>NULL</I>!<br>
+		Movie title<sup>*</sup>:<br>
+		<textarea name = "Movie_title" rows = 1 cols = 20>
+		</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>The Titanic</I><br>
+		Year:<br>
+		<textarea name = "Movie_year" rows = 1 cols = 20>
+		</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>1997</I><br>
+		Rating:<br>
+		<textarea name = "Movie_rating" rows = 1 cols = 20>
+		</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>PG-13</I><br>
+		Company:<br>
+		<textarea name = "Movie_company" rows = 1 cols = 20>
+		</textarea><?php echo str_repeat("&nbsp", 5);?>e.g <I>Drama Film</I><br>
+	</p>
+	<input type = "submit" name = "submit_Movie" value = "submit actor/director info"> <br>
+	</blockquote>
 </form>
 <?php
 if($_POST['submit_Movie']){
 	// first see if the ID is empty or not
 	$movie_id = $_POST['Movie_id'];
+	$movie_id = trim($movie_id);
 	$movie_title = $_POST['Movie_title'];
+	$title_test = trim($movie_title);
 	$movie_year = $_POST['Movie_year'];
+	$movie_year = trim($movie_year);
 	$movie_rating = $_POST['Movie_rating'];
+	$movie_rating = trim($movie_rating);
 	$movie_company = $_POST['Movie_company'];
+	$movie_company = trim($movie_company);
 	$badinput = false;
-	if(!isset($movie_id)){
+	if(empty($movie_id)){
 		echo "Please specify movie ID!<br>";
 		$badinput = true;
 	}
-	if(!isset($movie_title)){
+	else{
+		$read = "select * from Movie where id = " . $movie_id . ";";
+		mysql_query($read, $db_connection);
+		$affected = mysql_affected_rows($db_connection);
+		if($affected){
+			echo "Movie with ID = ". $movie_id . "already exists!<br>";
+			exit(0);
+		}
+	}
+	if(empty($title_test)){
 		echo "Please specify movie title!<br>";
-		$badinput = true;
+		exit(0);
 	}
 	else{
 		$movie_title = "'" . $movie_title . "'";

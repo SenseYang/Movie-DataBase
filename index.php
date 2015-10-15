@@ -2,7 +2,9 @@
 require_once('facilities.php');
 page_head('Index');
 ?>
-<p>Welcome to the My Movie Database! To begin, please select an option below.</p>
+<div>
+	<h2>Welcome to the My Movie Database!<h2>
+</div>
 <?php
 page_foot();
 ?>

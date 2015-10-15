@@ -4,31 +4,32 @@
 require_once('facilities.php');
 page_head('Add Relation');
 $db_connection = getConnection();
-print "         <h1>.</h1><br>";
 ?>
 <form method = "post" action = "<?php echo $_SERVER['PHP_SELF'];?>">
-<!--radio box for actor-->
+<blockquote>
+<p><h2>Add Relationships</h2></p>
+<div class="relative">	
+	<!--radio box for actor-->
 	<input type = "radio" name = "Ctype" value = "actor" checked>Actor<br>
-<?php echo str_repeat("&nbsp", 5);?>
-Actor ID:<?php echo str_repeat("&nbsp", 15);?>Role in the movie:<br>
-<?php echo str_repeat("&nbsp", 5);?>
-	<textarea name = "Actor_id" rows = 1 cols = 10>
-	</textarea><?php echo str_repeat("&nbsp", 8);?>
-	<textarea name = "Actor_role" rows = 1 cols = 10> 
-	</textarea><br>
-<!--radio box for director-->
+	Actor ID<sup>*</sup>: <br>
+	<textarea name = "Actor_id" rows = 1 cols = 10></textarea><br> 
+	Role in the movie<sup>*</sup>: <br>
+	<textarea name = "Actor_role" rows = 1 cols = 10></textarea><br> 
+</div>
+	<!--radio box for director-->
+<div class="relative">
 	<input type = "radio" name = "Ctype" value = "director">Director<br>
-<?php echo str_repeat("&nbsp", 5);?>
-Director ID:<br><?php echo str_repeat("&nbsp", 5);?>
-	<textarea name = "Director_id" rows = 1 cols = 10>
-	</textarea><br>
-<!--textarea for movie ID-->
-Movie ID:<br><?php echo str_repeat("&nbsp", 5);?>
-	<textarea name = "Movie_id" rows = 1 cols = 20> 
-	</textarea><br>
-
-	<input type = "submit" name = "submit_relation" value = "Submit Actor/Director and Movie Relations"><br></blockquote>
-</form>
+	Director ID<sup>*</sup>:<br>
+	<textarea name = "Director_id" rows = 1 cols = 10></textarea><br>		
+</div>
+	<!--textarea for movie ID-->
+	<p>
+		Movie ID<sup>*</sup>:<br>
+		<textarea name = "Movie_id" rows = 1 cols = 20></textarea><br>
+	</p>
+		<input type = "submit" name = "submit_relation" value = "Submit Actor/Director and Movie Relations"><br></blockquote>
+	</form>
+</blockquote>
 <?php
 if($_POST['submit_relation']){
 	$ctype = $_POST['Ctype'];
@@ -38,11 +39,12 @@ if($_POST['submit_relation']){
 	$msg = "";
 	if($ctype == "actor"){
 		$actorid = $_POST['Actor_id'];
+		$actorid = trim($actorid);
 		$actorrole = $_POST['Actor_role'];
 		$isActor = true;
 		if(empty($actorid)){
 			echo "Please specify the actor's ID!<br>";
-			$badinput = true;
+			exit(0);
 		}
 		else{// if no such actor exist
 			$select = "select * from Actor where id = "	. $actorid . ";";
@@ -51,12 +53,12 @@ if($_POST['submit_relation']){
 			if($affect == 0){
 				$msg .= "No actor with ID: " . $actorid . " is found<br>";
 				echo $msg;
-				$badinput = true;
+				exit(0);
 			}
 		}
 		if(empty($actorrole)){
 			echo "Please specify the actor's role in the movie!<br>";
-			$badinput = true;
+			exit(0);
 		}
 		else{
 			$actorrole = "'" . $actorrole . "'";
@@ -65,10 +67,11 @@ if($_POST['submit_relation']){
 	
 	if($ctype == "director" ){
 		$directorid = $_POST['Director_id'];
+		$directorid = trim($directorid);
 		$isActor = false;
 		if(empty($directorid)){
 			echo "Please specify the director's ID!<br>";
-			$badinput = true;
+			exit(0);
 		}
 		else{// if no such director exist
 			$select = "select * from director where id = "	. $directorid . ";";
@@ -77,13 +80,13 @@ if($_POST['submit_relation']){
 			if($affect == 0){
 				$msg .= "No director with ID: " . $directorid . " is found<br>";
 				echo $msg;
-				$badinput = true;
+				exit(0);
 			}
 		}
 	}
 	if(empty($movie_id)){
 		echo "Please specify the movie's ID!<br>";
-		$badinput = true;
+		exit(0);
 	}
 	else{
 		$select = "select * from Movie where id = "	. $movie_id . ";";
@@ -92,7 +95,7 @@ if($_POST['submit_relation']){
 		if($affect == 0){
 			$msg .= "No movie with ID: " . $movieID . " is found<br>";
 			echo $msg;
-			$badinput = true;
+			exit(0);
 		}
 	}
 	if(!$badinput){
